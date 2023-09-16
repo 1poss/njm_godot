@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "njm_godot", "njm_godot.csproj", "{A950E4B3-1239-4EFE-9C8B-5AD0E1756CF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A950E4B3-1239-4EFE-9C8B-5AD0E1756CF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A950E4B3-1239-4EFE-9C8B-5AD0E1756CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A950E4B3-1239-4EFE-9C8B-5AD0E1756CF5}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{A950E4B3-1239-4EFE-9C8B-5AD0E1756CF5}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{A950E4B3-1239-4EFE-9C8B-5AD0E1756CF5}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{A950E4B3-1239-4EFE-9C8B-5AD0E1756CF5}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal
