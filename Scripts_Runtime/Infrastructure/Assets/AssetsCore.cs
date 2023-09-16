@@ -1,24 +1,22 @@
 using Godot;
 
-namespace NJM.CoreAssets {
+namespace NJM.Core.Assets;
 
-    public class AssetsCore {
+public class AssetsCore {
 
-        PanelAssets panelAssets;
-        public PanelAssets PanelAssets => panelAssets;
+    PanelAssets panelAssets;
+    public PanelAssets PanelAssets => panelAssets;
 
-        public AssetsCore() {
-            panelAssets = new PanelAssets();
-        }
+    public AssetsCore() {
+        panelAssets = new PanelAssets();
+    }
 
-        public void LoadAll() {
-            panelAssets.LoadAll();
-        }
+    public void LoadAll() {
+        panelAssets.LoadAll();
+    }
 
-        public void Clear() {
-            panelAssets.Clear();
-        }
-
+    public void Clear() {
+        panelAssets.Clear();
     }
 
 }

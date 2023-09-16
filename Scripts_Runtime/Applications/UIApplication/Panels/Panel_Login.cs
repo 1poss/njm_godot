@@ -1,20 +1,26 @@
 using Godot;
 using System;
 
-namespace NJM.ApplicationUI {
+namespace NJM.Application.UI.Internal;
 
-    public partial class Panel_Login : Control, IUIPanel {
+public partial class Panel_Login : Control, IUIPanel {
 
-        [Export] public Button btnStart;
+    [Export] public Button btnStart;
 
-        public void Ctor() {
-            btnStart.ButtonUp += OnBtnStartButtonUp;
-        }
+    public Action OnStartGameHandle;
 
-        void OnBtnStartButtonUp() {
-            GD.Print("Start button pressed");
-        }
+    public void Ctor() {
+        btnStart.ButtonUp += OnBtnStartButtonUp;
+    }
 
+    public void TearDown() {
+        btnStart.ButtonUp -= OnBtnStartButtonUp;
+        OnStartGameHandle = null;
+    }
+
+    void OnBtnStartButtonUp() {
+        OnStartGameHandle.Invoke();
+        GD.Print("Start button pressed");
     }
 
 }

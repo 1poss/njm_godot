@@ -1,35 +1,55 @@
 using Godot;
-using NJM.CoreAssets;
+using NJM.Core.Assets;
 
-namespace NJM.ApplicationUI {
+namespace NJM.Application.UI.Internal;
 
-    public class UIFactory {
+public class UIFactory {
 
-        Node canvasNode;
-        UIRepo repo;
-        PanelAssets panelAssets;
+    Node canvasNode;
+    UIRepo repo;
+    PanelAssets panelAssets;
 
-        public UIFactory() { }
+    public UIFactory() { }
 
-        public void Inject(Node canvasNode, UIRepo repo, PanelAssets panelAssets) {
-            this.canvasNode = canvasNode;
-            this.repo = repo;
-            this.panelAssets = panelAssets;
+    public void Inject(Node canvasNode, UIRepo repo, PanelAssets panelAssets) {
+        this.canvasNode = canvasNode;
+        this.repo = repo;
+        this.panelAssets = panelAssets;
+    }
+
+    public T GetUnique<T>() where T : Control, IUIPanel {
+        string typeName = typeof(T).Name;
+        bool has = repo.TryGetUnique(typeName, out var panel);
+        if (!has) {
+            GD.PrintErr($"UIFactory.GetUnique<{typeName}>: panel not found");
+            return null;
         }
+        return (T)panel;
+    }
 
-        public T OpenUnique<T>() where T : Control, IUIPanel {
-            string typeName = typeof(T).Name;
-            bool has = panelAssets.TryGet(typeName, out var prefab);
-            if (!has) {
-                GD.PrintErr($"UIFactory.OpenUnique<{typeName}>: prefab not found");
-                return null;
-            }
-            var go = prefab.Instantiate<T>();
-            canvasNode.AddChild(go);
-            repo.AddUnique(typeName, go);
-            return go;
+    public T OpenUnique<T>() where T : Control, IUIPanel {
+        string typeName = typeof(T).Name;
+        bool has = panelAssets.TryGet(typeName, out var prefab);
+        if (!has) {
+            GD.PrintErr($"UIFactory.OpenUnique<{typeName}>: prefab not found");
+            return null;
         }
+        var go = prefab.Instantiate<T>();
+        canvasNode.AddChild(go);
+        repo.AddUnique(typeName, go);
+        return go;
+    }
 
+    public void Close<T>() where T : Control, IUIPanel {
+        string typeName = typeof(T).Name;
+        bool has = repo.TryGetUnique(typeName, out var panel);
+        if (!has) {
+            GD.PrintErr($"UIFactory.Close<{typeName}>: panel not found");
+            return;
+        }
+        Control control = (Control)panel;
+        control.QueueFree();
+        repo.RemoveUnique(typeName);
     }
 
 }

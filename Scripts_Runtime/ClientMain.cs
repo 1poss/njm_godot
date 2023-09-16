@@ -1,59 +1,81 @@
 using System;
 using Godot;
-using NJM.CoreAssets;
-using NJM.ApplicationUI;
-using NJM.BusinessLogin;
+using NJM.Core.Assets;
+using NJM.Core.Events;
+using NJM.Application.UI;
+using NJM.Business.Login;
+using NJM.Business.Game;
 
-namespace NJM.MainEntry {
+namespace NJM.MainEntry;
 
-    public partial class ClientMain : Node {
+public partial class ClientMain : Node {
 
-        [Export] public Control canvasNode;
+    [Export] public Control canvasNode;
 
-        UIApp uiApp;
+    UIApp uiApp;
 
-        AssetsCore assetsCore;
+    AssetsCore assetsCore;
 
-        LoginBusiness loginBusiness;
+    EventsCore eventsCore;
 
-        public override void _Ready() {
+    LoginBusiness loginBusiness;
+    GameBusiness gameBusiness;
+
+    public override void _Ready() {
+
+        try {
 
             // ==== Ctor ====
-            try {
+            uiApp = new UIApp();
 
-                uiApp = new UIApp();
-                assetsCore = new AssetsCore();
-                loginBusiness = new LoginBusiness();
+            assetsCore = new AssetsCore();
+            eventsCore = new EventsCore();
 
-                // ==== Inject ====
-                uiApp.Inject(canvasNode, assetsCore.PanelAssets);
-                loginBusiness.Inject(uiApp);
+            loginBusiness = new LoginBusiness();
+            gameBusiness = new GameBusiness();
 
-                // ==== Init ====
-                assetsCore.LoadAll();
+            // ==== Inject ====
+            uiApp.Inject(canvasNode, assetsCore.PanelAssets);
+            loginBusiness.Inject(uiApp, eventsCore);
+            gameBusiness.Inject(uiApp, eventsCore);
 
-                // ==== Enter ====
-                loginBusiness.Enter();
+            // ==== Init ====
+            assetsCore.LoadAll();
 
-            } catch (Exception ex) {
+            eventsCore.OnStartGameHandle += () => {
+                gameBusiness.Enter();
+            };
 
-                GD.PrintErr(ex);
-                
-            }
+            // ==== Enter ====
+            loginBusiness.Enter();
 
-        }
+        } catch (Exception ex) {
 
-        public override void _Process(double delta) {
+            GD.PrintErr(ex);
 
-        }
-
-        public override void _Notification(int what) {
-            if (what == NotificationWMCloseRequest) {
-                GD.Print("ClientMain: WM Close Request");
-                assetsCore.Clear();
-                GetTree().Quit();
-            }
         }
 
     }
+
+    public override void _Process(double delta) {
+
+    }
+
+    public override void _Notification(int what) {
+
+        // Windows close request
+        if (what == NotificationWMCloseRequest) {
+            GD.Print("ClientMain: WM Close Request");
+            assetsCore.Clear();
+            GetTree().Quit();
+        }
+
+        // Android back button
+        if (what == NotificationApplicationPaused) {
+
+        } else if (what == NotificationApplicationResumed) {
+
+        }
+    }
+
 }

@@ -1,7 +1,5 @@
-namespace NJM.ApplicationUI {
+namespace NJM.Application.UI.Internal;
 
-    public interface IUIPanel {
-
-    }
+public interface IUIPanel {
 
 }
