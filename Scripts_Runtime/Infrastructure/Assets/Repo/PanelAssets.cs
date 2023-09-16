@@ -6,6 +6,8 @@ namespace NJM.Core.Assets;
 
 public class PanelAssets {
 
+    const string DIR = "res://Assets/UI";
+
     Dictionary<string, PackedScene> all;
 
     public PanelAssets() {
@@ -13,9 +15,8 @@ public class PanelAssets {
     }
 
     public void LoadAll() {
-        List<PackedScene> list = ResourceHelper.LoadAllScenes("res://Assets/UI", false);
+        List<PackedScene> list = ResourceHelper.LoadAllScenes(DIR, false);
         foreach (var prefab in list) {
-            GD.Print("Load: " + prefab.GetResouceNameWithoutExt());
             all.Add(prefab.GetResouceNameWithoutExt(), prefab);
         }
     }

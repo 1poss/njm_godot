@@ -37,11 +37,13 @@ public partial class ClientMain : Node {
             // ==== Inject ====
             uiApp.Inject(canvasNode, assetsCore.PanelAssets);
             loginBusiness.Inject(uiApp, eventsCore);
-            gameBusiness.Inject(uiApp, eventsCore);
+            gameBusiness.Inject(uiApp, assetsCore, eventsCore);
 
             // ==== Init ====
+            // - Assets
             assetsCore.LoadAll();
 
+            // - Events
             eventsCore.OnStartGameHandle += () => {
                 gameBusiness.Enter();
             };
@@ -65,9 +67,7 @@ public partial class ClientMain : Node {
 
         // Windows close request
         if (what == NotificationWMCloseRequest) {
-            GD.Print("ClientMain: WM Close Request");
-            assetsCore.Clear();
-            GetTree().Quit();
+            TearDown();
         }
 
         // Android back button
@@ -76,6 +76,11 @@ public partial class ClientMain : Node {
         } else if (what == NotificationApplicationResumed) {
 
         }
+    }
+
+    void TearDown() {
+        assetsCore.Clear();
+        GetTree().Quit();
     }
 
 }

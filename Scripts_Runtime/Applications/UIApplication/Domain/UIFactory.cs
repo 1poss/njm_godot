@@ -18,7 +18,7 @@ public class UIFactory {
     }
 
     public T GetUnique<T>() where T : Control, IUIPanel {
-        string typeName = typeof(T).Name;
+        string typeName = GetTypeName<T>();
         bool has = repo.TryGetUnique(typeName, out var panel);
         if (!has) {
             GD.PrintErr($"UIFactory.GetUnique<{typeName}>: panel not found");
@@ -28,7 +28,7 @@ public class UIFactory {
     }
 
     public T OpenUnique<T>() where T : Control, IUIPanel {
-        string typeName = typeof(T).Name;
+        string typeName = GetTypeName<T>();
         bool has = panelAssets.TryGet(typeName, out var prefab);
         if (!has) {
             GD.PrintErr($"UIFactory.OpenUnique<{typeName}>: prefab not found");
@@ -41,7 +41,7 @@ public class UIFactory {
     }
 
     public void Close<T>() where T : Control, IUIPanel {
-        string typeName = typeof(T).Name;
+        string typeName = GetTypeName<T>();
         bool has = repo.TryGetUnique(typeName, out var panel);
         if (!has) {
             GD.PrintErr($"UIFactory.Close<{typeName}>: panel not found");
@@ -50,6 +50,10 @@ public class UIFactory {
         Control control = (Control)panel;
         control.QueueFree();
         repo.RemoveUnique(typeName);
+    }
+
+    static string GetTypeName<T>() {
+        return typeof(T).Name.ToLower();
     }
 
 }

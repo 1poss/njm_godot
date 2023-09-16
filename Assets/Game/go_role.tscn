@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://cihaeyllchoba"]
+
+[ext_resource type="Script" path="res://Scripts_Runtime/Business/Game/Entities/GameRoleEntity.cs" id="1_2rg40"]
+[ext_resource type="Texture2D" uid="uid://dfu02qwekmiql" path="res://icon.svg" id="1_gx2y6"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ls2jq"]
+friction = 0.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2iqvg"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6jbwq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_gx2y6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="go_role" type="Node2D"]
+script = ExtResource("1_2rg40")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_ls2jq")
+lock_rotation = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("CapsuleShape2D_2iqvg")
+debug_color = Color(0, 0.568627, 0.854902, 0.419608)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.125, 0.125)
+sprite_frames = SubResource("SpriteFrames_6jbwq")
